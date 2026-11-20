@@ -1,0 +1,23 @@
+# Maven build output
+target/
+
+# Java runtime and crash output
+*.class
+hs_err_pid*
+
+# IDE settings
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db

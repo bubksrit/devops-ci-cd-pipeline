@@ -13,11 +13,13 @@
 
     <groupId>com.example</groupId>
     <artifactId>todo-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <name>todo-api</name>
     <description>A minimal in-memory Todo REST API</description>
 
     <properties>
+        <!-- Jenkins overrides this per build; local builds keep a snapshot version. -->
+        <revision>0.0.1-SNAPSHOT</revision>
         <java.version>17</java.version>
     </properties>
 

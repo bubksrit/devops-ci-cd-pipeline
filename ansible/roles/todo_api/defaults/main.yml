@@ -1,0 +1,12 @@
+---
+app_name: todo-api
+app_user: todo-api
+app_group: todo-api
+app_home: /opt/todo-api
+app_port: 8080
+app_jar_source: "{{ playbook_dir }}/../target/todo-api-0.0.1-SNAPSHOT.jar"
+app_jar_dest: "{{ app_home }}/app.jar"
+
+todo_api_java_packages:
+  Debian: openjdk-17-jre-headless
+  RedHat: java-17-openjdk-headless

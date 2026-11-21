@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  role_name: todo_api
+  author: project-maintainers
+  description: Deploy the Todo API JAR as a systemd service.
+  license: MIT
+  min_ansible_version: "2.12"
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+        - bullseye
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags:
+    - java
+    - spring
+    - deployment
+dependencies: []

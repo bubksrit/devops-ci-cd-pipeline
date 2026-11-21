@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
     options {
         skipDefaultCheckout(true)
     }
@@ -54,6 +58,19 @@ pipeline {
                         bat command
                     }
                     echo "Packaged artifact: todo-api-${env.APP_VERSION}.jar"
+                }
+            }
+        }
+
+        stage('Build Docker image') {
+            steps {
+                script {
+                    def command = "docker build -t todo-api:${env.GIT_SHA} -t todo-api:${env.APP_VERSION} ."
+                    if (isUnix()) {
+                        sh command
+                    } else {
+                        bat command
+                    }
                 }
             }
         }

@@ -1,0 +1,6 @@
+---
+- name: Deploy the Todo API on this Linux host
+  hosts: todo_api
+  become: true
+  roles:
+    - todo_api

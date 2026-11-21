@@ -1,0 +1,73 @@
+---
+- name: Check supported Linux distribution family
+  ansible.builtin.assert:
+    that:
+      - ansible_os_family in todo_api_java_packages
+    fail_msg: "This role supports Debian- and Red Hat-family Linux distributions."
+
+- name: Install Java 17 runtime
+  ansible.builtin.package:
+    name: "{{ todo_api_java_packages[ansible_os_family] }}"
+    state: present
+
+- name: Check installed Java version
+  ansible.builtin.command: java -version
+  register: todo_api_java_version
+  changed_when: false
+  failed_when: >-
+    todo_api_java_version.rc != 0 or
+    '17.' not in (todo_api_java_version.stdout + todo_api_java_version.stderr)
+
+- name: Create Todo API group
+  ansible.builtin.group:
+    name: "{{ app_group }}"
+    system: true
+    state: present
+
+- name: Create Todo API service account
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    group: "{{ app_group }}"
+    home: "{{ app_home }}"
+    create_home: false
+    shell: /usr/sbin/nologin
+    system: true
+    state: present
+
+- name: Create application directory
+  ansible.builtin.file:
+    path: "{{ app_home }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0755"
+
+- name: Copy built application JAR
+  ansible.builtin.copy:
+    src: "{{ app_jar_source }}"
+    dest: "{{ app_jar_dest }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0644"
+  notify: Restart Todo API
+
+- name: Install Todo API systemd unit
+  ansible.builtin.template:
+    src: todo-api.service.j2
+    dest: /etc/systemd/system/todo-api.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: todo_api_service_unit
+  notify: Restart Todo API
+
+- name: Reload systemd after unit file changes
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: todo_api_service_unit.changed
+
+- name: Ensure Todo API service is enabled and running
+  ansible.builtin.systemd:
+    name: todo-api.service
+    enabled: true
+    state: started

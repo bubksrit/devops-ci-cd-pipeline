@@ -1,0 +1,6 @@
+---
+- name: Restart Todo API
+  ansible.builtin.systemd:
+    name: todo-api.service
+    state: restarted
+    enabled: true

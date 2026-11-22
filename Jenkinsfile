@@ -61,19 +61,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Build Docker image') {
-            steps {
-                script {
-                    def command = "docker build -t todo-api:${env.GIT_SHA} -t todo-api:${env.APP_VERSION} ."
-                    if (isUnix()) {
-                        sh command
-                    } else {
-                        bat command
-                    }
-                }
-            }
-        }
     }
 
     post {

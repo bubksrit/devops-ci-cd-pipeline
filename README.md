@@ -1,7 +1,5 @@
 # Todo API
 
-A small Java 17 and Spring Boot REST API. Todos are kept in memory, so they reset when the application stops.
-
 ## Requirements
 
 - Java 17
@@ -153,17 +151,6 @@ minikube service todo-api --url
 ```
 
 Use the URL printed by `minikube service` and append `/health` to check the running API. To remove the assignment resources, run `kubectl delete -f k8s/todo-api.yaml`. Jenkins builds SHA and build-version tags for the container image; Kubernetes deployment uses the local `todo-api:local` tag in this manifest, so load that tag into the cluster before applying it. A registry based deployment requires publishing the image and changing the manifest image reference.
-
-### Screenshots to capture for the assignment
-
-1. **Git history:** terminal output from `git branch -a` and `git log --oneline --graph --all`, showing `main`, `feature/health-endpoint`, and the merge commit.
-2. **Jenkins SCM and trigger:** job configuration showing the GitHub repository URL, `*/main`, `Jenkinsfile`, and Poll SCM schedule (`H/5 * * * *`) or the configured webhook trigger.
-3. **Successful console output:** completed build log showing checkout, the version line, tests, and packaging succeeded.
-4. **Archived artifact:** the successful build's **Artifacts** view showing the versioned JAR.
-5. **Build-version enhancement:** console output and/or artifact listing showing the build number and short commit SHA in the version and JAR name.
-6. **Ansible evidence:** successful `ansible-playbook` output showing the changed/deployed tasks, plus `systemctl status todo-api` and a successful `/health` response. A second run can show idempotence with no changes and no handler restart.
-7. **Docker evidence:** successful `docker build` output and `docker images` showing `todo-api:local`, followed by the container running and a successful `/health` response.
-8. **Kubernetes evidence:** `kubectl get deployment,pods,service` showing three available replicas and the NodePort Service, plus a successful `/health` response through the Service.
 
 ## Git workflow verification
 
